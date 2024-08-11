@@ -1,0 +1,22 @@
+@import '/src/scss/variables.scss';
+
+.header__logoTitle {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+.title {
+  span {
+    font-weight: 800;
+  }
+
+  p {
+    color: $text;
+  }
+}

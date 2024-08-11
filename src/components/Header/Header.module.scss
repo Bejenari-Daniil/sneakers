@@ -1,0 +1,50 @@
+@import '/src/scss/variables.scss';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 40px 10px 40px;
+  border-bottom: 1.5px solid $gray-line;
+
+  &__profileCartFavorites {
+    display: flex;
+    align-items: center;
+
+    ul {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+
+      li {
+        a {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          font-size: 16px;
+          align-items: center;
+          text-decoration: none;
+          color: $text;
+          transition: color 0.3s;
+
+          &:hover {
+            color: $link-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    &__profileCartFavorites {
+      justify-content: center;
+      ul {
+        justify-content: space-between;
+        gap: 20px;
+      }
+    }
+  }
+}

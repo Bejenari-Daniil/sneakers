@@ -1,0 +1,14 @@
+@import '/src/scss/variables.scss';
+
+.footer {
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-top: 1.5px solid $gray-line;
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

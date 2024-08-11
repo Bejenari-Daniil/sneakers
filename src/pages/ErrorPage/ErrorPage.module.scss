@@ -1,0 +1,12 @@
+.error__page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  height: 300px;
+  p:nth-child(1) {
+    font-size: 40px;
+    font-weight: 600;
+  }
+}

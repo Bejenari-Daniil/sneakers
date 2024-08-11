@@ -1,0 +1,92 @@
+@import '/src/scss/variables.scss';
+
+.filter {
+  padding: 20px 40px 20px 40px;
+  p {
+    color: $text;
+    font-weight: 900;
+    font-size: 26px;
+  }
+  svg {
+    color: $icon;
+    font-size: 25px;
+    transition: color 0.3s, box-shadow 0.3s;
+    display: flex;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+
+    .filter__searchBlock {
+      display: inherit;
+      align-items: center;
+
+      .filter__searchBlock_icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-right: 15px;
+        .icon_men {
+          font-size: 30px;
+          &:hover {
+            color: #00bfff;
+          }
+        }
+        .icon_women {
+          font-size: 30px;
+          &:hover {
+            color: #ff69b4;
+          }
+        }
+      }
+
+      .filter__searchBlock_input {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        svg {
+          position: absolute;
+          z-index: 1;
+          padding-left: 5px;
+        }
+
+        input {
+          border: 1px solid $gray-line;
+          padding: 5px 25px;
+          font-size: 16px;
+          border-radius: 8px;
+          position: relative;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+.active {
+  .icon_men {
+    color: #00bfff;
+  }
+  .icon_women {
+    color: #ff69b4;
+  }
+  p {
+    color: lightblue;
+  }
+}
+
+@media (max-width: 680px) {
+  .filter {
+    &__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      .filter__searchBlock {
+        flex-direction: row-reverse;
+        gap: 15px;
+      }
+    }
+  }
+}
