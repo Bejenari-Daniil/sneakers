@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
-import ButtonMakeOrder from '../../components/Elements/ButtonMakeOrder/ButtonMakeOrder';
-import styles from './CartDrawer.module.scss';
 import { IoCloseCircleOutline, IoRemoveCircleOutline } from 'react-icons/io5';
 import { LOCALSTORAGE_KEYS } from '../../helper/constants';
 import { useCart } from '../../contexts/CartContext';
+import { useNavigate } from 'react-router-dom';
+import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
+import ButtonMakeOrder from '../../components/Elements/ButtonMakeOrder/ButtonMakeOrder';
+import styles from './CartDrawer.module.scss';
 
 const CartDrawer = ({ toggleCartDrawer }) => {
+  const navigate = useNavigate();
   const { addedItemsToCart, clearCart, removeItemFromCart } = useCart();
   const [cartItems, setCartItems] = useState([]);
   const [orderMade, setOrderMade] = useState(false);

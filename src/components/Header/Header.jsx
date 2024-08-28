@@ -2,15 +2,24 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import { useFavorites } from '../../contexts/FavoriteContext';
-import CartDrawer from '../../pages/Cart/CartDrawer';
-import { FaRegUserCircle, FaRegHeart, FaShoppingCart } from 'react-icons/fa';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import {
+  FaRegUserCircle,
+  FaRegHeart,
+  FaShoppingCart,
+  FaCartArrowDown,
+} from 'react-icons/fa';
 import Logo from './Logo/Logo';
+import CartDrawer from '../../pages/Cart/CartDrawer';
 import styles from './Header.module.scss';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const { addedItemsToCart } = useCart();
   const { favorites } = useFavorites();
+  const { currentUser } = useAuth();
   const toogleCartDrawer = () => {
     setIsCartDrawerOpen(!isCartDrawerOpen);
   };
@@ -27,6 +36,10 @@ const Header = () => {
     };
   }, [isCartDrawerOpen]);
 
+  const handleAuthClick = () => {
+    navigate('/signIn');
+  };
+
   const navigationLinks = [
     {
       url: '#',
@@ -41,8 +54,14 @@ const Header = () => {
     },
     {
       url: '/orders',
-      icon: <FaRegUserCircle />,
+      icon: <FaCartArrowDown />,
       label: 'Покупки',
+    },
+    {
+      url: '/signIn',
+      icon: <FaRegUserCircle />,
+      label: currentUser ? currentUser.name : 'Авторизация',
+      onClick: handleAuthClick,
     },
   ];
 

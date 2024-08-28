@@ -1,15 +1,11 @@
-import styles from './Logo.module.scss';
 import { NavLink } from 'react-router-dom';
+import { GiBootStomp } from 'react-icons/gi';
+import styles from './Logo.module.scss';
 
 const Logo = () => {
   return (
     <NavLink to="/" className={styles.header__logoTitle}>
-      <img
-        width={40}
-        height={40}
-        src="/assets/img/logo/logo.png"
-        alt="react-sneakers-logo"
-      />
+      <GiBootStomp />
 
       <div className={styles.title}>
         <span>REACT SNEAKERS</span>

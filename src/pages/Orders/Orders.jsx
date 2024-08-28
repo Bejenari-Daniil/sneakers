@@ -1,7 +1,7 @@
-import styles from './Orders.module.scss';
-import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
 import { useEffect, useState } from 'react';
 import { LOCALSTORAGE_KEYS } from '../../helper/constants';
+import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
+import styles from './Orders.module.scss';
 
 const Profile = () => {
   const [isOrdered, setIsOrdered] = useState([]);

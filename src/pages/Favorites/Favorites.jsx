@@ -1,9 +1,9 @@
-import styles from './Favorites.module.scss';
-import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
 import { useEffect, useState } from 'react';
 import { LOCALSTORAGE_KEYS } from '../../helper/constants';
-import ProductCard from '../../components/Products/ProductCard/ProductCard';
 import { useFavorites } from '../../contexts/FavoriteContext';
+import ProductCard from '../../components/Products/ProductCard/ProductCard';
+import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
+import styles from './Favorites.module.scss';
 
 const Favorites = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);

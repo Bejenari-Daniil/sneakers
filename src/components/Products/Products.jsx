@@ -1,20 +1,29 @@
 import ProductCard from './ProductCard/ProductCard';
 import ProductFilter from './ProductFilter/ProductFilter';
 import { data } from '../../helper/fakeData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCart } from '../../contexts/CartContext';
 import { useFavorites } from '../../contexts/FavoriteContext';
+import { useSearchParams } from 'react-router-dom';
 import styles from './Products.module.scss';
 
 const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState(data);
   const [searchedValue, setSearchedValue] = useState('');
-  const [category, setCategory] = useState('all');
   const { addItemToCart, removeItemFromCart } = useCart();
   const { addItemToFavorites, removeItemFromFavorites } = useFavorites();
+  const [category, setCategory] = useState('all');
+  const [searchParams] = useSearchParams();
+
+  const postQuery = searchParams.get('post') || '';
+  const categoryQuery = searchParams.get('category') || 'all';
+
+  useEffect(() => {
+    handleFilterChange(postQuery, categoryQuery);
+    setSearchedValue(postQuery);
+  }, [postQuery, categoryQuery]);
 
   const handleFilterChange = (searchValue, category) => {
-    setSearchedValue(searchValue);
     const filtered = data.filter(
       (product) =>
         product.name.toLowerCase().includes(searchValue.toLowerCase()) &&
