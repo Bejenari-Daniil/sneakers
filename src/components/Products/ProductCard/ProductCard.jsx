@@ -1,77 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import styles from './ProductCard.module.scss';
+import {
+  addItemToFavorites,
+  removeItemFromFavorites,
+} from '../../../features/favorite/favoriteSlice';
+import {
+  addItemToCart,
+  removeItemFromCart,
+} from '../../../features/cart/cartSlice';
 
+import { useDispatch, useSelector } from 'react-redux';
 import {
   IoHeartOutline,
   IoHeart,
   IoAddCircleOutline,
   IoAddCircle,
 } from 'react-icons/io5';
-import { LOCALSTORAGE_KEYS } from '../../../helper/constants';
+import styles from './ProductCard.module.scss';
 
-const ProductCard = ({
-  id,
-  name,
-  price,
-  imageUrl,
-  onAddToCart,
-  onRemoveFromCart,
-  onAddToFavorites,
-  onRemoveFromFavorites,
-}) => {
-  const [isFavoriteState, setIsFavoriteState] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
+const ProductCard = ({ id, name, price, imageUrl }) => {
+  const dispatch = useDispatch();
+  const favorites = useSelector((state) => state.favorites);
+  const isFavoriteState = favorites.some((product) => product.id === id);
 
-  const savedProducts = localStorage.getItem(
-    LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART,
-  );
-  const savedFavoriteProducts = localStorage.getItem(
-    LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_FAVORITES,
-  );
-
-  useEffect(() => {
-    const savedProductsArr = savedProducts ? JSON.parse(savedProducts) : [];
-    const isProductInCart = savedProductsArr.some(
-      (product) => product.id === id,
-    );
-
-    if (isProductInCart) {
-      setIsAdded(true);
-    } else {
-      setIsAdded(false);
-    }
-  }, [savedProducts, id]);
-
-  useEffect(() => {
-    const savedFavoriteProductsArr = savedFavoriteProducts
-      ? JSON.parse(savedFavoriteProducts)
-      : [];
-    const isProductInFavorites = savedFavoriteProductsArr.some(
-      (product) => product.id === id,
-    );
-
-    if (isProductInFavorites) {
-      setIsFavoriteState(true);
-    }
-  }, [savedFavoriteProducts, id]);
+  const cart = useSelector((state) => state.cart);
+  const isAdded = cart.some((product) => product.id === id);
 
   const handleAddToFavorites = () => {
-    setIsFavoriteState(true);
-    onAddToFavorites();
+    dispatch(addItemToFavorites({ id, name, price, imageUrl }));
   };
+
   const handleRemoveFromFavorites = () => {
-    setIsFavoriteState(false);
-    onRemoveFromFavorites(id);
+    dispatch(removeItemFromFavorites(id));
   };
 
   const handleAddToCart = () => {
-    setIsAdded(true);
-    onAddToCart();
+    dispatch(addItemToCart({ id, name, price, imageUrl }));
   };
 
   const handleRemoveFromCart = () => {
-    setIsAdded(false);
-    onRemoveFromCart(id);
+    dispatch(removeItemFromCart(id));
   };
 
   return (

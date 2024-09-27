@@ -1,52 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeOrder } from '../../features/orders/ordersSlice';
+import { clearCart, removeItemFromCart } from '../../features/cart/cartSlice';
 import { IoCloseCircleOutline, IoRemoveCircleOutline } from 'react-icons/io5';
-import { LOCALSTORAGE_KEYS } from '../../helper/constants';
-import { useCart } from '../../contexts/CartContext';
-import { useNavigate } from 'react-router-dom';
+
 import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
 import ButtonMakeOrder from '../../components/Elements/ButtonMakeOrder/ButtonMakeOrder';
 import styles from './CartDrawer.module.scss';
 
 const CartDrawer = ({ toggleCartDrawer }) => {
-  const navigate = useNavigate();
-  const { addedItemsToCart, clearCart, removeItemFromCart } = useCart();
-  const [cartItems, setCartItems] = useState([]);
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart);
+
   const [orderMade, setOrderMade] = useState(false);
   const isEmpty = cartItems.length === 0;
 
-  useEffect(() => {
-    setCartItems(addedItemsToCart);
-  }, [addedItemsToCart]);
-
-  useEffect(() => {
-    const savedProducts = localStorage.getItem(
-      LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART,
-    );
-    if (savedProducts) {
-      const parsedProducts = JSON.parse(savedProducts);
-      setCartItems(parsedProducts);
-    }
-  }, []);
-
-  const handleRemoveFromCart = (productId) => {
-    removeItemFromCart(productId);
-    const updatedCartItems = cartItems.filter((item) => item.id !== productId);
-    setCartItems(updatedCartItems);
-    localStorage.setItem(
-      LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART,
-      JSON.stringify(updatedCartItems),
-    );
+  const handleMakeOrder = () => {
+    dispatch(makeOrder(cartItems));
+    setOrderMade(!orderMade);
+    dispatch(clearCart());
   };
 
-  const handleMakeOrder = () => {
-    localStorage.setItem(
-      LOCALSTORAGE_KEYS.ORDER_HISTORY,
-      JSON.stringify(cartItems),
-    );
-    localStorage.removeItem(LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART);
-    setCartItems([]);
-    clearCart();
-    setOrderMade(true);
+  const handleRemoveFromCart = (productId) => {
+    dispatch(removeItemFromCart(productId));
   };
 
   const totalPrice = cartItems.reduce(

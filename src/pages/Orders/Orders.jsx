@@ -1,28 +1,17 @@
-import { useEffect, useState } from 'react';
-import { LOCALSTORAGE_KEYS } from '../../helper/constants';
 import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
 import styles from './Orders.module.scss';
+import { useSelector } from 'react-redux';
 
-const Profile = () => {
-  const [isOrdered, setIsOrdered] = useState([]);
+const Orders = () => {
+  const isOrdered = useSelector((state) => state.orders);
   const isEmpty = isOrdered.length === 0;
-
-  useEffect(() => {
-    const orderedProducts = localStorage.getItem(
-      LOCALSTORAGE_KEYS.ORDER_HISTORY,
-    );
-    if (orderedProducts) {
-      const parsedProducts = JSON.parse(orderedProducts);
-      setIsOrdered(parsedProducts);
-    }
-  }, []);
 
   return (
     <>
-      <div className={styles.profile}>
-        <p className={styles.profile__title}>Мои Покупки</p>
+      <div className={styles.orders}>
+        <p className={styles.orders__title}>Мои Покупки</p>
         {isEmpty ? (
-          <div className={styles.profile__empty}>
+          <div className={styles.orders__empty}>
             <p>У вас нет покупок</p>
             <p>Оформите покупку чтобы отобразить её здесь</p>
             <ButtonGoBack></ButtonGoBack>
@@ -53,4 +42,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Orders;

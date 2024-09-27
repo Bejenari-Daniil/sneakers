@@ -2,16 +2,12 @@ import ProductCard from './ProductCard/ProductCard';
 import ProductFilter from './ProductFilter/ProductFilter';
 import { data } from '../../helper/fakeData';
 import { useEffect, useState } from 'react';
-import { useCart } from '../../contexts/CartContext';
-import { useFavorites } from '../../contexts/FavoriteContext';
 import { useSearchParams } from 'react-router-dom';
 import styles from './Products.module.scss';
 
 const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState(data);
   const [searchedValue, setSearchedValue] = useState('');
-  const { addItemToCart, removeItemFromCart } = useCart();
-  const { addItemToFavorites, removeItemFromFavorites } = useFavorites();
   const [category, setCategory] = useState('all');
   const [searchParams] = useSearchParams();
 
@@ -41,22 +37,6 @@ const Products = () => {
     handleFilterChange(searchValue, newCategory);
   };
 
-  const handleAddToCart = (product) => {
-    addItemToCart(product);
-  };
-
-  const handleRemoveFromCart = (productId) => {
-    removeItemFromCart(productId);
-  };
-
-  const handleAddToFavorites = (product) => {
-    addItemToFavorites(product);
-  };
-
-  const handleRemoveFromFavorites = (product) => {
-    removeItemFromFavorites(product);
-  };
-
   return (
     <>
       <ProductFilter
@@ -77,10 +57,6 @@ const Products = () => {
               name={obj.name}
               price={obj.price}
               imageUrl={obj.imageUrl}
-              onAddToCart={() => handleAddToCart(obj)}
-              onRemoveFromCart={() => handleRemoveFromCart(obj.id)}
-              onAddToFavorites={() => handleAddToFavorites(obj)}
-              onRemoveFromFavorites={() => handleRemoveFromFavorites(obj.id)}
             />
           ))
         )}

@@ -1,70 +1,28 @@
-import { useEffect, useState } from 'react';
-import { LOCALSTORAGE_KEYS } from '../../helper/constants';
-import { useFavorites } from '../../contexts/FavoriteContext';
+import { removeItemFromFavorites } from '../../features/favorite/favoriteSlice';
+import {
+  addItemToCart,
+  removeItemFromCart,
+} from '../../features/cart/cartSlice';
 import ProductCard from '../../components/Products/ProductCard/ProductCard';
 import ButtonGoBack from '../../components/Elements/ButtonGoBack/ButtonGoBack';
 import styles from './Favorites.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Favorites = () => {
-  const [favoriteItems, setFavoriteItems] = useState([]);
-  const { removeItemFromFavorites } = useFavorites();
+  const dispatch = useDispatch();
+  const favoriteItems = useSelector((state) => state.favorites);
   const isEmpty = favoriteItems.length === 0;
 
-  useEffect(() => {
-    const savedFavoriteProducts = localStorage.getItem(
-      LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_FAVORITES,
-    );
-    if (savedFavoriteProducts) {
-      const parsedProducts = JSON.parse(savedFavoriteProducts);
-      setFavoriteItems(parsedProducts);
-    }
-  }, []);
-
   const handleRemoveFromFavorites = (productId) => {
-    removeItemFromFavorites(productId);
-    const updatedFavoritesItems = favoriteItems.filter(
-      (item) => item.id !== productId,
-    );
-    setFavoriteItems(updatedFavoritesItems);
-    localStorage.setItem(
-      LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_FAVORITES,
-      JSON.stringify(updatedFavoritesItems),
-    );
+    dispatch(removeItemFromFavorites(productId));
   };
 
   const handleAddToCart = (product) => {
-    const savedProducts = localStorage.getItem(
-      LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART,
-    );
-    const savedProductsArr = savedProducts ? JSON.parse(savedProducts) : [];
-
-    const productExistsInCart = savedProductsArr.some(
-      (savedProduct) => savedProduct.id === product.id,
-    );
-
-    if (!productExistsInCart) {
-      const updatedProducts = [...savedProductsArr, product];
-      localStorage.setItem(
-        LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART,
-        JSON.stringify(updatedProducts),
-      );
-    }
+    dispatch(addItemToCart(product));
   };
 
   const handleRemoveFromCart = (productId) => {
-    const savedProducts = localStorage.getItem(
-      LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART,
-    );
-    const savedProductsArr = savedProducts ? JSON.parse(savedProducts) : [];
-
-    const updatedProducts = savedProductsArr.filter(
-      (product) => product.id !== productId,
-    );
-
-    localStorage.setItem(
-      LOCALSTORAGE_KEYS.ADDED_PRODUCTS_TO_CART,
-      JSON.stringify(updatedProducts),
-    );
+    dispatch(removeItemFromCart(productId));
   };
 
   return (

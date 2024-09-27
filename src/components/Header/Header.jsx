@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useCart } from '../../contexts/CartContext';
-import { useFavorites } from '../../contexts/FavoriteContext';
-import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   FaRegUserCircle,
   FaRegHeart,
@@ -17,9 +15,9 @@ import styles from './Header.module.scss';
 const Header = () => {
   const navigate = useNavigate();
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
-  const { addedItemsToCart } = useCart();
-  const { favorites } = useFavorites();
-  const { currentUser } = useAuth();
+  const favoriteItems = useSelector((state) => state.favorites);
+  const cartItems = useSelector((state) => state.cart);
+  const currentUser = useSelector((state) => state.authorization.currentUser);
   const toogleCartDrawer = () => {
     setIsCartDrawerOpen(!isCartDrawerOpen);
   };
@@ -44,13 +42,13 @@ const Header = () => {
     {
       url: '#',
       icon: <FaShoppingCart />,
-      label: `${addedItemsToCart.length || 0}`,
+      label: `${cartItems.length || 0}`,
       onClick: toogleCartDrawer,
     },
     {
       url: '/favorites',
       icon: <FaRegHeart />,
-      label: `${favorites.length || 0}`,
+      label: `${favoriteItems.length || 0}`,
     },
     {
       url: '/orders',

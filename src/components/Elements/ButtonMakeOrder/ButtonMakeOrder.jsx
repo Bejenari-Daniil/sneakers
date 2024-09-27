@@ -1,10 +1,11 @@
 import { IoArrowForwardOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import styles from './ButtonMakeOrder.module.scss';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useSelector } from 'react-redux';
 
 const ButtonMakeOrder = ({ toggleCartDrawer, onClick }) => {
-  const { currentUser } = useAuth();
+  const currentUser = useSelector((state) => state.authorization.currentUser);
+
   const navigate = useNavigate();
 
   const handleBackButtonClick = () => {

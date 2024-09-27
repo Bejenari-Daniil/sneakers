@@ -2,16 +2,21 @@ import { Form, Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { LOCALSTORAGE_KEYS } from '../../../helper/constants';
-import { useAuth } from '../../../contexts/AuthContext';
 import styles from './SignIn.module.scss';
 import ButtonGoBack from '../../../components/Elements/ButtonGoBack/ButtonGoBack';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  logout,
+  login,
+} from '../../../features/authorization/authorizationSlice';
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { login, logout, currentUser } = useAuth();
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.authorization.currentUser);
 
   const handleLogout = () => {
-    logout();
+    dispatch(logout());
   };
 
   const initialValues = {
@@ -33,7 +38,7 @@ const SignIn = () => {
 
     if (user) {
       console.log('Found user:', user);
-      login(user);
+      dispatch(login(user));
       navigate('/');
     } else {
       setFieldError('email', 'Пользователь с такими данными не найден');
